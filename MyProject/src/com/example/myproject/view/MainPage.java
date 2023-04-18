@@ -1,28 +1,27 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
 import java.awt.EventQueue;
+import java.time.LocalDate;
 
 import javax.swing.JFrame;
-import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JTextField;
-
-import com.example.myproject.controller.MemberDaoImpl;
-import com.example.myproject.model.Member;
-
-import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 
 public class MainPage {
+	
+	private static final String[] COLUMN_NAMES = {"ID", "Title", "Writer", "Date"};
 
+	private DefaultTableModel model;
 	private JFrame frame;
-	private JButton btnToLogin;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private JTextField searchTextField;
 
 	/**
 	 * Launch the application.
@@ -39,15 +38,6 @@ public class MainPage {
 			}
 		});
 	}
-	
-	private final MemberDaoImpl dao = MemberDaoImpl.getInstance();
-	private boolean isAuthenticated = false;
-	private Member loginMember = null;
-	private JButton btnToSignup;
-	private JButton btnLogout;
-	private JPanel defaultPanel;
-	private JPanel authenticatedPanel;
-	private JTextField memberInfo;
 
 	/**
 	 * Create the application.
@@ -61,91 +51,48 @@ public class MainPage {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 600, 466);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		// 로그인 전 화면
-		defaultPanel = new JPanel();
-		defaultPanel.setBounds(0, 0, 434, 261);
-		frame.getContentPane().add(defaultPanel);
-		defaultPanel.setLayout(null);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(12, 51, 562, 326);
+		frame.getContentPane().add(scrollPane);
 		
-		btnToLogin = new JButton("Login");
-		btnToLogin.setBounds(47, 183, 142, 39);
-		defaultPanel.add(btnToLogin);
-		btnToLogin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				LoginPage.createMemberLogin(frame, MainPage.this);
-			}
-		});
-		btnToLogin.setFont(new Font("Consolas", Font.PLAIN, 20));
+		table = new JTable();
+		Object[][] data = {};
+		model = new DefaultTableModel(data, COLUMN_NAMES);
 		
-		btnToSignup = new JButton("Signup");
-		btnToSignup.setBounds(238, 183, 142, 39);
-		defaultPanel.add(btnToSignup);
-		btnToSignup.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SignupPage.createMemberSignup(frame, MainPage.this);
-			}
-		});
-		btnToSignup.setFont(new Font("Consolas", Font.PLAIN, 20));
+		Object[] row = {1, "title", "writer", LocalDate.now()};
+		model.addRow(row);
+		table.setModel(model);
+		scrollPane.setViewportView(table);
 		
-		memberInfo = new JTextField();
-		memberInfo.setBounds(235, 10, 187, 48);
-		defaultPanel.add(memberInfo);
-		memberInfo.setEditable(false);
-		memberInfo.setFont(new Font("Consolas", Font.PLAIN, 20));
-		memberInfo.setColumns(10);
+		JButton btnWrite = new JButton("Write");
+		btnWrite.setFont(new Font("Consolas", Font.PLAIN, 15));
+		btnWrite.setBounds(483, 387, 91, 23);
+		frame.getContentPane().add(btnWrite);
 		
-		// 로그인 후 화면
-		authenticatedPanel = new JPanel();
-		authenticatedPanel.setVisible(false);
-		authenticatedPanel.setBounds(0, 0, 434, 261);
-		frame.getContentPane().add(authenticatedPanel);
+		JButton btnNewButton = new JButton("Search");
+		btnNewButton.setFont(new Font("Consolas", Font.PLAIN, 15));
+		btnNewButton.setBounds(483, 18, 91, 23);
+		frame.getContentPane().add(btnNewButton);
 		
-		btnLogout = new JButton("Logout");
-		btnLogout.setBounds(47, 183, 142, 39);
-		authenticatedPanel.setLayout(null);
-		authenticatedPanel.add(btnLogout);
-		btnLogout.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				notifyMemberLogout();
-			}
-		});
-		btnLogout.setFont(new Font("Consolas", Font.PLAIN, 20));
+		searchTextField = new JTextField();
+		searchTextField.setFont(new Font("Consolas", Font.PLAIN, 13));
+		searchTextField.setBounds(333, 18, 138, 21);
+		frame.getContentPane().add(searchTextField);
+		searchTextField.setColumns(10);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setFont(new Font("Consolas", Font.PLAIN, 15));
+		comboBox.setBounds(253, 18, 69, 21);
+		frame.getContentPane().add(comboBox);
+		
+		JLabel lblSort = new JLabel("Sort By");
+		lblSort.setFont(new Font("Consolas", Font.PLAIN, 15));
+		lblSort.setBounds(185, 22, 56, 15);
+		frame.getContentPane().add(lblSort);
 		
 	}
-	
-	public void notifyMemberLogin(Member member) {
-		JOptionPane.showMessageDialog(frame, "로그인 성공");
-		
-		// 로그인 된 회원정보 저장
-		isAuthenticated = true;
-		loginMember = member;
-		
-		memberInfo.setText("name = " + loginMember.getMemberName());
-		
-		defaultPanel.setVisible(false);
-		authenticatedPanel.setVisible(true);
-	}
-	
-	public void notifyMemberLogout() {
-		JOptionPane.showMessageDialog(frame, "로그아웃 성공");
-		
-		// 로그인된 회원 정보 초기화
-		isAuthenticated = false;
-		loginMember = null;
-		
-		defaultPanel.setVisible(true);
-		authenticatedPanel.setVisible(false);
-	}
-	
-	public void notifyMemberCreated() {
-		JOptionPane.showMessageDialog(frame, "회원가입 성공");
-	}
-	
 }
