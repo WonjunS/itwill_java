@@ -22,10 +22,12 @@ import java.time.LocalDateTime;
 
 import javax.swing.JButton;
 
-public class PostWrite extends JFrame {
+public class PostRead extends JFrame {
 
 	private final PostDaoImpl dao = PostDaoImpl.getInstance();
 	private Member member;
+	private Post post;
+	
 	private JPanel contentPane;
 	private JTextField textTitle;
 	private JLabel lblTitle;
@@ -35,17 +37,18 @@ public class PostWrite extends JFrame {
 	private Component parent;
 	private MainPage app;
 	private JPanel panel;
-	private JButton btnCancel;
-	private JButton btnRegister;
+	private JButton btnClose;
+	private JButton btnDelete;
+	private JButton btnEdit;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void createPostWrite(Component parent, MainPage app, Member member) {
+	public static void createPostRead(Component parent, MainPage app, Member member, Post post) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PostWrite frame = new PostWrite(parent, app, member);
+					PostRead frame = new PostRead(parent, app, member, post);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,10 +57,11 @@ public class PostWrite extends JFrame {
 		});
 	}
 	
-	public PostWrite(Component parent, MainPage app, Member member) {
+	public PostRead(Component parent, MainPage app, Member member, Post post) {
 		this.parent = parent;
 		this.app = app;
 		this.member = member;
+		this.post = post;
 		initialize();
 	}
 
@@ -65,8 +69,6 @@ public class PostWrite extends JFrame {
 	 * Create the frame.
 	 */
 	private void initialize() {
-		setTitle("글쓰기");
-		
 		int x = 100, y = 100;
 		
 		if(parent != null) {
@@ -88,6 +90,8 @@ public class PostWrite extends JFrame {
 		contentPane.add(lblTitle);
 		
 		textTitle = new JTextField();
+		textTitle.setText(post.getTitle());
+		textTitle.setEditable(false);
 		textTitle.setFont(new Font("Consolas", Font.PLAIN, 15));
 		textTitle.setBounds(101, 9, 407, 33);
 		contentPane.add(textTitle);
@@ -103,49 +107,83 @@ public class PostWrite extends JFrame {
 		contentPane.add(scrollPane);
 		
 		textContent = new JTextField();
+		textContent.setText(post.getContent());
+		textContent.setEditable(false);
 		textContent.setFont(new Font("Consolas", Font.PLAIN, 15));
 		textContent.setColumns(10);
 		scrollPane.setViewportView(textContent);
 		
-		btnRegister = new JButton("글쓰기");
-		btnRegister.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String title = textTitle.getText();
-				String content = textContent.getText();
-				
-				if(title.trim().length() == 0) {
-					JOptionPane.showMessageDialog(lblContent, "제목을 입력해주세요.");
-					return;
+		if(post.getMemberId() == member.getMemberId()) {
+			textTitle.setEditable(true);
+			textContent.setEditable(true);
+			
+			btnEdit = new JButton("글수정");
+			btnEdit.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					updatePost();
 				}
-				if(content.trim().length() == 0) {
-					JOptionPane.showMessageDialog(lblContent, "내용을 입력해주세요.");
-					return;
+			});
+			btnEdit.setFont(new Font("D2Coding", Font.PLAIN, 20));
+			btnEdit.setBounds(58, 462, 130, 40);
+			contentPane.add(btnEdit);
+			
+			btnDelete = new JButton("글삭제");
+			btnDelete.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					deletePost();
 				}
-				
-				Post post = new Post(0, title, content, member.getNickname(), 0, 0, 
-						LocalDateTime.now(), LocalDateTime.now(), member.getMemberId());
-				
-				dao.create(post);
-				
-				app.notifyPostWrite();
-				
-				dispose();
-			}
-		});
-		btnRegister.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		btnRegister.setBounds(216, 462, 130, 40);
-		contentPane.add(btnRegister);
+			});
+			btnDelete.setFont(new Font("D2Coding", Font.PLAIN, 20));
+			btnDelete.setBounds(216, 462, 130, 40);
+			contentPane.add(btnDelete);
+		}
 		
-		btnCancel = new JButton("취소");
-		btnCancel.addActionListener(new ActionListener() {
+		btnClose = new JButton("닫기");
+		btnClose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnCancel.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		btnCancel.setBounds(378, 462, 130, 40);
-		contentPane.add(btnCancel);
+		btnClose.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		btnClose.setBounds(378, 462, 130, 40);
+		contentPane.add(btnClose);
+		
+	}
+	
+	private void updatePost() {
+		String title = textTitle.getText();
+		String content = textContent.getText();
+		
+		if(title.length() == 0) {
+			JOptionPane.showMessageDialog(panel, "제목을 입력해주세요.");
+			return;
+		}
+		if(content.length() == 0) {
+			JOptionPane.showMessageDialog(panel, "내용을 입력해주세요.");
+			return;
+		}
+		
+		post.setTitle(title);
+		post.setContent(content);
+		
+		dao.update(post);
+		
+		app.notifyPostUpdate();
+		
+		dispose();
+	}
+	
+	private void deletePost() {
+		int answer = JOptionPane.showConfirmDialog(panel, "정말 삭제할까요?");
+		if(answer == 0) {
+			dao.delete(post.getPostId());
+			
+			app.notifyPostDelete();
+			
+			dispose();
+		}
 	}
 }

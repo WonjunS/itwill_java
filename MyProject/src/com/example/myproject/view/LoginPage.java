@@ -56,6 +56,7 @@ public class LoginPage extends JFrame {
 	}
 	
 	private final MemberDaoImpl dao = MemberDaoImpl.getInstance();
+	private JButton btnSignup;
 
 	/**
 	 * Create the frame.
@@ -63,8 +64,15 @@ public class LoginPage extends JFrame {
 	public void initialize() {
 		setTitle("로그인");
 		
+		int x = 100, y = 100;
+		
+		if(parent != null) {
+			x = parent.getX();
+			y = parent.getY();
+		}
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(x, y, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -76,44 +84,42 @@ public class LoginPage extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		lblEmail = new JLabel("Email");
-		lblEmail.setBounds(35, 54, 55, 24);
-		lblEmail.setFont(new Font("Consolas", Font.PLAIN, 20));
+		lblEmail = new JLabel("이메일");
+		lblEmail.setBounds(35, 54, 88, 24);
+		lblEmail.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		panel.add(lblEmail);
 
 		
-		lblPasswd = new JLabel("Password");
+		lblPasswd = new JLabel("비밀번호");
 		lblPasswd.setBounds(35, 127, 88, 24);
-		lblPasswd.setFont(new Font("Consolas", Font.PLAIN, 20));
+		lblPasswd.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		panel.add(lblPasswd);
 		
 		textLogin = new JTextField();
-		textLogin.setBounds(185, 48, 206, 36);
-		textLogin.setFont(new Font("Consolas", Font.PLAIN, 20));
+		textLogin.setBounds(161, 48, 230, 36);
+		textLogin.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textLogin.setColumns(10);
 		panel.add(textLogin);
 		
 		textPassword = new JPasswordField();
-		textPassword.setFont(new Font("Consolas", Font.PLAIN, 20));
+		textPassword.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textPassword.setColumns(10);
-		textPassword.setBounds(185, 121, 206, 36);
+		textPassword.setBounds(161, 121, 230, 36);
 		panel.add(textPassword);
 		
 		loginPanel = new JPanel();
 		loginPanel.setBounds(0, 202, 434, 59);
 		contentPane.add(loginPanel);
 		
-		btnLogin = new JButton("Login");
+		btnLogin = new JButton("로그인");
 		loginPanel.add(btnLogin);
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String email = textLogin.getText();
 				String password = textPassword.getText();
-				System.out.println(email + " " + password);
 				
 				Member member = dao.getLoginInfo(email, password);
-				System.out.println(member);
 				if(member != null) {
 					app.notifyMemberLogin(member);
 					dispose();
@@ -124,7 +130,11 @@ public class LoginPage extends JFrame {
 				}
 			}
 		});
-		btnLogin.setFont(new Font("Consolas", Font.PLAIN, 20));
+		btnLogin.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		
+		btnSignup = new JButton("회원가입");
+		btnSignup.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		loginPanel.add(btnSignup);
 		
 	}
 }
