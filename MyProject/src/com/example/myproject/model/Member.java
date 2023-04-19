@@ -1,9 +1,8 @@
-package com.example.project.model;
+package com.example.myproject.model;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Member implements Serializable {
+public class Member {
 	
 	public interface Entity {
 		String TBL_NAME = "MEMBER";
@@ -11,9 +10,7 @@ public class Member implements Serializable {
 		String COL_NAME = "MEMBER_NAME";
 		String COL_EMAIL = "EMAIL";
 		String COL_PASSWORD = "PASSWORD";
-		String COL_PHONE = "PHONE";
-		String COL_GENDER = "GENDER";
-		String COL_NATIONALITY = "NATIONALITY";
+		String COL_NICKNAME = "NICKNAME";
 		String COL_CREATED_TIME = "CREATED_TIME";
 		String COL_MODIFIED_TIME = "MODIFIED_TIME";
 	}
@@ -22,21 +19,16 @@ public class Member implements Serializable {
 	private String memberName;
 	private String email;
 	private String password;
-	private String phone;
-	private String gender;
-	private String nationality;
+	private String nickname;
 	private LocalDateTime createdTime;
 	private LocalDateTime modifiedTime;
 	
-	public Member(int memberId, String memberName, String email, String password, 
-			String phone, String gender, String nationality) {
+	public Member(int memberId, String memberName, String email, String password, String nickname) {
 		this.memberId = memberId;
 		this.memberName = memberName;
 		this.email = email;
 		this.password = password;
-		this.phone = phone;
-		this.gender = gender;
-		this.nationality = nationality;
+		this.nickname = nickname;
 	}
 	
 	public Member(String email, String password) {
@@ -72,28 +64,12 @@ public class Member implements Serializable {
 		this.password = password;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getNickname() {
+		return nickname;
 	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getNationality() {
-		return nationality;
-	}
-
-	public void setNationality(String nationality) {
-		this.nationality = nationality;
+	
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public LocalDateTime getCreatedTime() {
@@ -111,5 +87,6 @@ public class Member implements Serializable {
 	public void setModifiedTime(LocalDateTime modifiedTime) {
 		this.modifiedTime = modifiedTime;
 	}
+
 
 }
