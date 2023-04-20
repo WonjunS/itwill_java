@@ -33,10 +33,13 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JToolBar;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class MainPage {
 	
-	private static final String[] COLUMN_NAMES = {"ID", "Title", "Writer", "View", "Date"};
+	private static final String[] COLUMN_NAMES = {"번호", "제목", "작성자", "조회수", "작성일"};
 
 	private JFrame frame;
 	private JButton btnToLogin;
@@ -66,8 +69,6 @@ public class MainPage {
 	private JPanel defaultPanel;
 	
 	private JPanel authenticatedPanel;
-	private JTextField memberInfo;
-	private JButton btnLogout;
 	private DefaultTableModel model;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -77,6 +78,12 @@ public class MainPage {
 	private JComboBox comboBox;
 	
 	private List<Post> postList;
+	private JMenuItem mntmEditPassword;
+	private JMenuItem mntmLogoutMenuItem;
+	private JMenu mnNewMenu;
+	private JMenuBar menuBar;
+	private JMenuItem mntmEditNickname;
+	private JMenuItem mntmMemberInfo;
 
 
 	/**
@@ -158,22 +165,8 @@ public class MainPage {
 		frame.getContentPane().add(authenticatedPanel);
 		authenticatedPanel.setLayout(null);
 		
-		btnLogout = new JButton("로그아웃");
-		btnLogout.setBounds(619, 10, 107, 33);
-		authenticatedPanel.add(btnLogout);
-		btnLogout.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(frame, "로그아웃 되었습니다.");
-				loginMember = null;
-				authenticatedPanel.setVisible(false);
-				defaultPanel.setVisible(true);
-			}
-		});
-		btnLogout.setFont(new Font("D2Coding", Font.PLAIN, 16));
-		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 115, 714, 326);
+		scrollPane.setBounds(12, 115, 714, 304);
 		authenticatedPanel.add(scrollPane);
 		
 		model = new DefaultTableModel(null, COLUMN_NAMES);
@@ -192,24 +185,18 @@ public class MainPage {
 		
 		scrollPane.setViewportView(table);
 		
-		btnWrite = new JButton("글쓰기");
-		btnWrite.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PostWrite.createPostWrite(frame, MainPage.this, loginMember);
-			}
-		});
-		btnWrite.setBounds(619, 462, 107, 33);
-		authenticatedPanel.add(btnWrite);
-		btnWrite.setFont(new Font("D2Coding", Font.PLAIN, 16));
-		
 		btnSearch = new JButton("검색");
 		btnSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String keyword = searchTextField.getText();
+				String searchBy = (String) comboBox.getSelectedItem();
 				
-				postList = postDao.read(keyword);
+				if(searchBy.equals("제목")) searchBy = "TITLE";
+				if(searchBy.equals("내용")) searchBy = "CONTENT";
+				if(searchBy.equals("작성자")) searchBy = "WRITER";
+				
+				postList = postDao.read(searchBy, keyword);
 				
 				model = new DefaultTableModel(null, COLUMN_NAMES);
 
@@ -232,10 +219,64 @@ public class MainPage {
 		searchTextField.setColumns(10);
 		
 		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"title", "content", "writer"}));
-		comboBox.setBounds(316, 61, 80, 32);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"제목", "내용", "작성자"}));
+		comboBox.setBounds(306, 61, 90, 32);
 		authenticatedPanel.add(comboBox);
-		comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		comboBox.setFont(new Font("D2Coding", Font.PLAIN, 16));
+		
+		btnWrite = new JButton("글쓰기");
+		btnWrite.setBounds(619, 435, 107, 33);
+		authenticatedPanel.add(btnWrite);
+		btnWrite.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PostWrite.createPostWrite(frame, MainPage.this, loginMember);
+			}
+		});
+		btnWrite.setFont(new Font("D2Coding", Font.PLAIN, 16));
+		
+		menuBar = new JMenuBar();
+		menuBar.setVisible(false);
+		frame.setJMenuBar(menuBar);
+		
+		mnNewMenu = new JMenu("메뉴");
+		menuBar.add(mnNewMenu);
+		
+		mntmLogoutMenuItem = new JMenuItem("로그아웃");
+		mntmLogoutMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(frame, "로그아웃 되었습니다.");
+				loginMember = null;
+				authenticatedPanel.setVisible(false);
+				menuBar.setVisible(false);
+				defaultPanel.setVisible(true);
+			}
+		});
+		
+		mntmEditPassword = new JMenuItem("비밀번호 변경");
+		mntmEditPassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PasswordUpdate.createPasswordUpdate(frame, MainPage.this, loginMember);
+			}
+		});
+		
+		mntmMemberInfo = new JMenuItem("회원정보");
+		mntmMemberInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MemberInfo.createMemberInfo(frame, MainPage.this, loginMember);
+			}
+		});
+		mnNewMenu.add(mntmMemberInfo);
+		mnNewMenu.add(mntmEditPassword);
+		
+		mntmEditNickname = new JMenuItem("닉네임 변경");
+		mntmEditNickname.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NicknameUpdate.createNicknameUpdate(frame, MainPage.this, loginMember);
+			}
+		});
+		mnNewMenu.add(mntmEditNickname);
+		mnNewMenu.add(mntmLogoutMenuItem);
 		
 	}
 	
@@ -247,11 +288,24 @@ public class MainPage {
 		loginMember = member;
 		
 		defaultPanel.setVisible(false);
+		menuBar.setVisible(true);
 		authenticatedPanel.setVisible(true);
 	}
 	
 	public void notifyMemberCreated() {
 		JOptionPane.showMessageDialog(frame, "회원가입 성공");
+	}
+	
+	public void notifyNicknameUpdate(Member member) {
+		JOptionPane.showMessageDialog(frame, "닉네임 변경 성공");
+		
+		loginMember = member;
+	}
+	
+	public void notifyPasswordUpdate(Member member) {
+		JOptionPane.showMessageDialog(frame, "비밀번호 변경 성공");
+		
+		loginMember = member;
 	}
 	
 	public void notifyPostWrite() {

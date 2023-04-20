@@ -18,12 +18,16 @@ import com.example.myproject.controller.MemberDaoImpl;
 import com.example.myproject.model.Member;
 
 import javax.swing.JPasswordField;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LoginPage extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
-	private JPanel loginPanel;
 	private JTextField textLogin;
 	private JPasswordField textPassword;
 	private JLabel lblPasswd;
@@ -56,7 +60,8 @@ public class LoginPage extends JFrame {
 	}
 	
 	private final MemberDaoImpl dao = MemberDaoImpl.getInstance();
-	private JButton btnSignup;
+	private JLabel lblFindPassword;
+	private JButton btnNewButton;
 
 	/**
 	 * Create the frame.
@@ -72,7 +77,7 @@ public class LoginPage extends JFrame {
 		}
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(x, y, 450, 300);
+		setBounds(x, y, 450, 344);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -80,23 +85,25 @@ public class LoginPage extends JFrame {
 		contentPane.setLayout(null);
 		
 		panel = new JPanel();
-		panel.setBounds(0, 0, 434, 202);
+		panel.setBackground(SystemColor.activeCaption);
+		panel.setBounds(0, 0, 434, 305);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		lblEmail = new JLabel("이메일");
-		lblEmail.setBounds(35, 54, 88, 24);
+		lblEmail.setBackground(new Color(255, 255, 255));
+		lblEmail.setBounds(35, 20, 88, 24);
 		lblEmail.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		panel.add(lblEmail);
 
 		
 		lblPasswd = new JLabel("비밀번호");
-		lblPasswd.setBounds(35, 127, 88, 24);
+		lblPasswd.setBounds(35, 111, 88, 24);
 		lblPasswd.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		panel.add(lblPasswd);
 		
 		textLogin = new JTextField();
-		textLogin.setBounds(161, 48, 230, 36);
+		textLogin.setBounds(35, 48, 356, 36);
 		textLogin.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textLogin.setColumns(10);
 		panel.add(textLogin);
@@ -104,15 +111,14 @@ public class LoginPage extends JFrame {
 		textPassword = new JPasswordField();
 		textPassword.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textPassword.setColumns(10);
-		textPassword.setBounds(161, 121, 230, 36);
+		textPassword.setBounds(35, 138, 356, 36);
 		panel.add(textPassword);
 		
-		loginPanel = new JPanel();
-		loginPanel.setBounds(0, 202, 434, 59);
-		contentPane.add(loginPanel);
-		
 		btnLogin = new JButton("로그인");
-		loginPanel.add(btnLogin);
+		btnLogin.setBackground(Color.black);
+		btnLogin.setForeground(Color.white);
+		btnLogin.setBounds(35, 235, 356, 36);
+		panel.add(btnLogin);
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -132,9 +138,16 @@ public class LoginPage extends JFrame {
 		});
 		btnLogin.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		
-		btnSignup = new JButton("회원가입");
-		btnSignup.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		loginPanel.add(btnSignup);
+		lblFindPassword = new JLabel("비밀번호 찾기");
+		lblFindPassword.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showMessageDialog(panel, "비밀번호 찾기");
+			}
+		});
+		lblFindPassword.setFont(new Font("D2Coding", Font.PLAIN, 14));
+		lblFindPassword.setBounds(35, 196, 97, 15);
+		panel.add(lblFindPassword);
 		
 	}
 }

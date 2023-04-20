@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -77,7 +78,7 @@ public class SignupPage extends JFrame {
 		}
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(x, y, 498, 492);
+		setBounds(x, y, 498, 527);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -85,7 +86,7 @@ public class SignupPage extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 484, 379);
+		panel.setBounds(0, 0, 484, 416);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -96,22 +97,22 @@ public class SignupPage extends JFrame {
 		
 		lblEmail = new JLabel("이메일");
 		lblEmail.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		lblEmail.setBounds(25, 94, 130, 45);
+		lblEmail.setBounds(25, 174, 130, 45);
 		panel.add(lblEmail);
 		
 		lblPasswd = new JLabel("비밀번호");
 		lblPasswd.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		lblPasswd.setBounds(25, 160, 130, 45);
+		lblPasswd.setBounds(25, 247, 130, 45);
 		panel.add(lblPasswd);
 		
 		lblPasswdConfirm = new JLabel("비밀번호 확인");
 		lblPasswdConfirm.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		lblPasswdConfirm.setBounds(25, 225, 130, 45);
+		lblPasswdConfirm.setBounds(25, 324, 130, 45);
 		panel.add(lblPasswdConfirm);
 		
 		lblNickname = new JLabel("닉네임");
 		lblNickname.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		lblNickname.setBounds(25, 294, 130, 45);
+		lblNickname.setBounds(25, 104, 130, 45);
 		panel.add(lblNickname);
 		
 		textName = new JTextField();
@@ -123,27 +124,27 @@ public class SignupPage extends JFrame {
 		textEmail = new JTextField();
 		textEmail.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textEmail.setColumns(10);
-		textEmail.setBounds(178, 94, 278, 45);
+		textEmail.setBounds(178, 174, 278, 45);
 		panel.add(textEmail);
 		
 		textPassword = new JPasswordField();
 		textPassword.setFont(new Font("D2Coding", Font.PLAIN, 16));
-		textPassword.setBounds(178, 160, 278, 45);
+		textPassword.setBounds(178, 247, 278, 45);
 		panel.add(textPassword);
 		
 		passwordConfirm = new JPasswordField();
 		passwordConfirm.setFont(new Font("D2Coding", Font.PLAIN, 16));
-		passwordConfirm.setBounds(178, 225, 278, 45);
+		passwordConfirm.setBounds(178, 324, 278, 45);
 		panel.add(passwordConfirm);
 		
 		textNickname = new JTextField();
 		textNickname.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textNickname.setColumns(10);
-		textNickname.setBounds(178, 294, 278, 45);
+		textNickname.setBounds(178, 104, 278, 45);
 		panel.add(textNickname);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(0, 381, 484, 72);
+		buttonPanel.setBounds(0, 416, 484, 72);
 		contentPane.add(buttonPanel);
 		
 		btnSignup = new JButton("회원가입");
@@ -160,10 +161,23 @@ public class SignupPage extends JFrame {
 					JOptionPane.showMessageDialog(SignupPage.this, "이름을 입력해주세요.");
 					return;
 				}
+				if(nickname.trim().length() == 0) {
+					JOptionPane.showMessageDialog(SignupPage.this, "닉네임을 입력해주세요.");
+					return;
+				}
+				if(!dao.validateNickname(nickname)) {
+					JOptionPane.showMessageDialog(SignupPage.this, "이미 사용중인 닉네임 입니다.");
+					return;
+				}
 				if(email.trim().length() == 0) {
 					JOptionPane.showMessageDialog(SignupPage.this, "이메일을 입력해주세요.");
 					return;
 				}
+				if(!dao.validateEmail(email)) {
+					JOptionPane.showMessageDialog(SignupPage.this, "이미 사용중인 이메일 입니다.");
+					return;
+				}
+				
 				if(password.trim().length() < 6) {
 					JOptionPane.showMessageDialog(SignupPage.this, "비밀번호는 6자 이상이어야 합니다.");
 					return;
@@ -172,21 +186,14 @@ public class SignupPage extends JFrame {
 					JOptionPane.showMessageDialog(SignupPage.this, "비밀번호가 일치하지 않습니다.");
 					return;
 				}
-				if(nickname.trim().length() == 0) {
-					JOptionPane.showMessageDialog(SignupPage.this, "닉네임을 입력해주세요.");
-					return;
-				}
 				
-				boolean isEmailExists = dao.validateEmail(email);
-				if(!isEmailExists) {
-					Member member = new Member(0, name, email, password, nickname);
-					dao.createMember(member);
-					app.notifyMemberCreated();
-					dispose();
-				} else {
-					JOptionPane.showMessageDialog(SignupPage.this, "이미 사용중인 이메일 입니다.");
-					textEmail.setText("");
-				}
+				LocalDateTime now = LocalDateTime.now();
+				
+				Member member = new Member(0, name, email, password, nickname, now, now);
+				dao.createMember(member);
+				app.notifyMemberCreated();
+				dispose();
+				
 			}
 		});
 		btnSignup.setFont(new Font("D2Coding", Font.PLAIN, 20));
