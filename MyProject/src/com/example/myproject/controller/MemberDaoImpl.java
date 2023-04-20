@@ -72,8 +72,10 @@ public class MemberDaoImpl implements MemberDao {
 				email = rs.getString(COL_EMAIL);
 				password = rs.getString(COL_PASSWORD);
 				String nickname = rs.getString(COL_NICKNAME);
+				LocalDateTime createdTime = rs.getTimestamp(COL_CREATED_TIME).toLocalDateTime();
+				LocalDateTime modifiedTime = rs.getTimestamp(COL_MODIFIED_TIME).toLocalDateTime();
 				
-				findMember = new Member(memberId, memberName, email, password, nickname);
+				findMember = new Member(memberId, memberName, email, password, nickname, createdTime, modifiedTime);
 			}
 			
 		} catch (SQLException e) {
@@ -142,7 +144,7 @@ public class MemberDaoImpl implements MemberDao {
 			stmt.setString(1, email);
 			rs = stmt.executeQuery();
 			if(rs.next()) {
-				return true;
+				return false;
 			}
 			
 		} catch (SQLException e) {
@@ -155,24 +157,88 @@ public class MemberDaoImpl implements MemberDao {
 			}
 		}
 		
-		return false;
+		return true;
 	}
 	
-	private static final String SQL_UPDATE_MEMBER =
+	private static final String SQL_SELECT_BY_NICKNAME = 
+			"select *"
+			+ " from " + TBL_NAME
+			+ " where " + COL_NICKNAME + " = ?";
+
+	@Override
+	public boolean validateNickname(String nickname) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement(SQL_SELECT_BY_NICKNAME);
+			stmt.setString(1, nickname);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeResources(conn, stmt, rs);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
+	}
+	
+	private static final String SQL_UPDATE_NICKNAME =
 			"update " + TBL_NAME
 			+ " set " + COL_NICKNAME + " = ?"
 			+ " where " + COL_ID + " = ?";
 
 	@Override
-	public int updateMember(Member member) {
+	public int updateNickname(Member member) {
 		int result = 0;
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
 			conn = getConnection();
-			stmt = conn.prepareStatement(SQL_UPDATE_MEMBER);
+			stmt = conn.prepareStatement(SQL_UPDATE_NICKNAME);
 			stmt.setString(1, member.getNickname());
+			stmt.setInt(2, member.getMemberId());
+			
+			result = stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeResources(conn, stmt);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
+	private static final String SQL_UPDATE_PASSWORD =
+			"update " + TBL_NAME
+			+ " set " + COL_PASSWORD + " = ?"
+			+ " where " + COL_ID + " = ?";
+
+	@Override
+	public int updatePassword(Member member) {
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement(SQL_UPDATE_PASSWORD);
+			stmt.setString(1, member.getPassword());
 			stmt.setInt(2, member.getMemberId());
 			
 			result = stmt.executeUpdate();

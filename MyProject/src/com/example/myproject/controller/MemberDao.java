@@ -8,9 +8,13 @@ public interface MemberDao {
 	
 	boolean validateEmail(String email);
 	
+	boolean validateNickname(String nickname);
+	
 	int createMember(Member member);
 	
-	int updateMember(Member member);
+	int updateNickname(Member member);
+	
+	int updatePassword(Member member);
 	
 	int deleteMember(Member member);
 

@@ -144,8 +144,13 @@ public class PostDaoImpl implements PostDao {
 			+ " order by " + COL_POST_ID + " desc";
 	
 	@Override
-	public List<Post> read(String keyword) {
+	public List<Post> read(String searchBy, String keyword) {
 		List<Post> list = new ArrayList<>();
+		
+		final String SQL_SELECT_BY_KEYWORD =
+				"select * from " + TBL_NAME
+				+ " where lower(" + searchBy + ") like lower(?)"
+				+ " order by " + COL_POST_ID + " desc";
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;

@@ -25,10 +25,11 @@ public interface PostDao {
 	/**
 	 * 주어진 검색어가 포함된 게시물을 찾기
 	 * 
+	 * @param searchBy 검색 기준(제목, 내용, 작성자)
 	 * @param keyword 검색어
 	 * @return Post 타입을 원소로 갖는 List
 	 */
-	List<Post> read(String keyword);
+	List<Post> read(String searchBy, String keyword);
 	
 	/**
 	 * 특정 회원이 작성한 게시물을 찾기
