@@ -1,34 +1,36 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.myproject.controller.MemberDaoImpl;
-import com.example.myproject.model.Member;
-
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import com.example.project.controller.MemberDaoImpl;
+import com.example.project.model.Member;
 
 public class NicknameUpdate extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField nicknameField;
 	private JLabel lblNickname;
+	private JButton btnNewButton;
 	private JButton btnSave;
 	
 	private final MemberDaoImpl dao = MemberDaoImpl.getInstance();
+	private boolean flag = false;
 	private Member loginMember;
 	private Component parent;
 	private MainPage app;
-	private JButton btnNewButton;
+	
 
 	/**
 	 * Launch the application.
@@ -82,12 +84,14 @@ public class NicknameUpdate extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String input = nicknameField.getText();
 				
+				if(!flag) {
+					JOptionPane.showMessageDialog(parent, "닉네임 중복 확인을 해주세요.");
+					return;
+				}
+				
 				loginMember.setNickname(input);
-				
 				dao.updateNickname(loginMember);
-				
 				app.notifyNicknameUpdate(loginMember);
-				
 				dispose();
 			}
 		});
@@ -96,6 +100,20 @@ public class NicknameUpdate extends JFrame {
 		contentPane.add(btnSave);
 		
 		btnNewButton = new JButton("중복확인");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = nicknameField.getText();
+				
+				boolean isAvailable = dao.validateNickname(input);
+				if(!isAvailable) {
+					JOptionPane.showMessageDialog(parent, "이미 사용중인 닉네임 입니다.");
+					return;
+				}
+				
+				JOptionPane.showMessageDialog(parent, "사용 가능한 닉네임 입니다.");
+				flag = true;
+			}
+		});
 		btnNewButton.setFont(new Font("D2Coding", Font.PLAIN, 12));
 		btnNewButton.setBounds(337, 67, 85, 31);
 		contentPane.add(btnNewButton);

@@ -1,23 +1,21 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import com.example.myproject.controller.MemberDaoImpl;
-import com.example.myproject.model.Member;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.border.EmptyBorder;
+
+import com.example.project.controller.MemberDaoImpl;
+import com.example.project.model.Member;
 
 public class PasswordUpdate extends JFrame {
 

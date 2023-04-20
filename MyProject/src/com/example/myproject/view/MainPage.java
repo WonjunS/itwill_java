@@ -1,41 +1,32 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
-import com.example.myproject.controller.MemberDaoImpl;
-import com.example.myproject.controller.PostDaoImpl;
-import com.example.myproject.model.Member;
-import com.example.myproject.model.Post;
-
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
-import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JToolBar;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JMenu;
+import com.example.project.client.Client_GUI;
+import com.example.project.controller.MemberDaoImpl;
+import com.example.project.controller.PostDaoImpl;
+import com.example.project.model.Member;
+import com.example.project.model.Post;
 
 public class MainPage {
 	
@@ -84,6 +75,8 @@ public class MainPage {
 	private JMenuBar menuBar;
 	private JMenuItem mntmEditNickname;
 	private JMenuItem mntmMemberInfo;
+	private JMenu mnChatMenu;
+	private JMenuItem mntmNewMenuItem;
 
 
 	/**
@@ -277,6 +270,17 @@ public class MainPage {
 		});
 		mnNewMenu.add(mntmEditNickname);
 		mnNewMenu.add(mntmLogoutMenuItem);
+		
+		mnChatMenu = new JMenu("채팅");
+		menuBar.add(mnChatMenu);
+		
+		mntmNewMenuItem = new JMenuItem("채팅 들어가기");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Client_GUI.start();
+			}
+		});
+		mnChatMenu.add(mntmNewMenuItem);
 		
 	}
 	

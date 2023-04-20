@@ -1,4 +1,4 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.example.myproject.controller.MemberDaoImpl;
-import com.example.myproject.model.Member;
+import com.example.project.controller.MemberDaoImpl;
+import com.example.project.model.Member;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

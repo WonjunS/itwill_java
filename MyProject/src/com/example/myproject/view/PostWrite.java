@@ -1,4 +1,4 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -9,9 +9,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.example.myproject.controller.PostDaoImpl;
-import com.example.myproject.model.Member;
-import com.example.myproject.model.Post;
+import com.example.project.controller.PostDaoImpl;
+import com.example.project.model.Member;
+import com.example.project.model.Post;
 
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;

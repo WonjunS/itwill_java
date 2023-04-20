@@ -1,10 +1,14 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,15 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.myproject.controller.MemberDaoImpl;
-import com.example.myproject.model.Member;
+import com.example.project.controller.MemberDaoImpl;
+import com.example.project.model.Member;
 
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
-import java.awt.Color;
-import java.awt.SystemColor;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class LoginPage extends JFrame {
 

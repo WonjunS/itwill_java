@@ -1,26 +1,23 @@
-package com.example.myproject.view;
+package com.example.project.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.myproject.controller.PostDaoImpl;
-import com.example.myproject.model.Member;
-import com.example.myproject.model.Post;
-
-import javax.swing.JTextField;
-import javax.swing.JScrollPane;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDateTime;
-
-import javax.swing.JButton;
+import com.example.project.controller.PostDaoImpl;
+import com.example.project.model.Member;
+import com.example.project.model.Post;
 
 public class PostRead extends JFrame {
 
