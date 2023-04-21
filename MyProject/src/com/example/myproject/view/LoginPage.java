@@ -1,4 +1,4 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -15,14 +15,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.project.controller.MemberDaoImpl;
-import com.example.project.model.Member;
-
-import javax.swing.JPasswordField;
-import javax.swing.UIManager;
+import com.example.myproject.controller.MemberDaoImpl;
+import com.example.myproject.model.Member;
 
 public class LoginPage extends JFrame {
 
@@ -85,7 +83,7 @@ public class LoginPage extends JFrame {
 		contentPane.setLayout(null);
 		
 		panel = new JPanel();
-		panel.setBackground(SystemColor.activeCaption);
+		panel.setBackground(SystemColor.inactiveCaption);
 		panel.setBounds(0, 0, 434, 305);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -93,17 +91,17 @@ public class LoginPage extends JFrame {
 		lblEmail = new JLabel("이메일");
 		lblEmail.setBackground(new Color(255, 255, 255));
 		lblEmail.setBounds(35, 20, 88, 24);
-		lblEmail.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		lblEmail.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		panel.add(lblEmail);
 
 		
 		lblPasswd = new JLabel("비밀번호");
 		lblPasswd.setBounds(35, 111, 88, 24);
-		lblPasswd.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		lblPasswd.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		panel.add(lblPasswd);
 		
 		textLogin = new JTextField();
-		textLogin.setBounds(35, 48, 356, 36);
+		textLogin.setBounds(35, 48, 366, 36);
 		textLogin.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textLogin.setColumns(10);
 		panel.add(textLogin);
@@ -111,13 +109,13 @@ public class LoginPage extends JFrame {
 		textPassword = new JPasswordField();
 		textPassword.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textPassword.setColumns(10);
-		textPassword.setBounds(35, 138, 356, 36);
+		textPassword.setBounds(35, 138, 366, 36);
 		panel.add(textPassword);
 		
 		btnLogin = new JButton("로그인");
 		btnLogin.setBackground(Color.black);
 		btnLogin.setForeground(Color.white);
-		btnLogin.setBounds(35, 235, 356, 36);
+		btnLogin.setBounds(35, 235, 366, 42);
 		panel.add(btnLogin);
 		btnLogin.addActionListener(new ActionListener() {
 			@Override

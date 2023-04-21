@@ -1,17 +1,21 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -22,18 +26,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import com.example.project.client.Client_GUI;
-import com.example.project.controller.MemberDaoImpl;
-import com.example.project.controller.PostDaoImpl;
-import com.example.project.model.Member;
-import com.example.project.model.Post;
+import com.example.myproject.controller.MemberDaoImpl;
+import com.example.myproject.controller.PostDaoImpl;
+import com.example.myproject.model.Member;
+import com.example.myproject.model.Post;
 
 public class MainPage {
 	
 	private static final String[] COLUMN_NAMES = {"번호", "제목", "작성자", "조회수", "작성일"};
-
-	private JFrame frame;
-	private JButton btnToLogin;
 
 	/**
 	 * Launch the application.
@@ -54,11 +54,16 @@ public class MainPage {
 	private final MemberDaoImpl memberDao = MemberDaoImpl.getInstance();
 	private final PostDaoImpl postDao = PostDaoImpl.getInstance();
 	
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	
+	private List<Post> postList;
 	private boolean isAuthenticated = false;
 	private Member loginMember = null;
-	private JButton btnToSignup;
-	private JPanel defaultPanel;
 	
+	private JFrame frame;
+	private JButton btnLogin;
+	private JButton btnSignup;
+	private JPanel defaultPanel;
 	private JPanel authenticatedPanel;
 	private DefaultTableModel model;
 	private JTable table;
@@ -68,15 +73,15 @@ public class MainPage {
 	private JButton btnSearch;
 	private JComboBox comboBox;
 	
-	private List<Post> postList;
 	private JMenuItem mntmEditPassword;
 	private JMenuItem mntmLogoutMenuItem;
-	private JMenu mnNewMenu;
+	private JMenu mnMember;
 	private JMenuBar menuBar;
 	private JMenuItem mntmEditNickname;
 	private JMenuItem mntmMemberInfo;
 	private JMenu mnChatMenu;
 	private JMenuItem mntmNewMenuItem;
+	private JLabel lblImage;
 
 
 	/**
@@ -91,23 +96,14 @@ public class MainPage {
 		model = new DefaultTableModel(null, COLUMN_NAMES);
 		loadAllPosts();
 		table.setModel(model);
-		
-		table.getColumnModel().getColumn(0).setResizable(false);
-        table.getColumnModel().getColumn(0).setPreferredWidth(45);
-        table.getColumnModel().getColumn(1).setResizable(false);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
-        table.getColumnModel().getColumn(2).setResizable(false);
-        table.getColumnModel().getColumn(2).setPreferredWidth(164);
-        table.getColumnModel().getColumn(3).setResizable(false);
-        table.getColumnModel().getColumn(3).setPreferredWidth(45);
-        table.getColumnModel().getColumn(4).setResizable(false);
-        table.getColumnModel().getColumn(4).setPreferredWidth(140);
 	}
 	
 	private void loadAllPosts() {
 		postList = postDao.read();
 		for(Post p : postList) {
-			Object[] row = {p.getPostId(), p.getTitle(), p.getWriter(), p.getViews(), p.getCreatedTime()};
+			Object[] row = {p.getPostId(), p.getTitle(), p.getWriter(), p.getViews(), 
+					p.getCreatedTime().format(formatter)};
+			
 			model.addRow(row);
 		}
 	}
@@ -119,7 +115,7 @@ public class MainPage {
 		frame = new JFrame();
 		frame.setTitle("게시판");
 		frame.setBounds(100, 100, 754, 576);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		// 로그인 전 화면
@@ -128,27 +124,36 @@ public class MainPage {
 		frame.getContentPane().add(defaultPanel);
 		defaultPanel.setLayout(null);
 		
-		btnToLogin = new JButton("로그인");
-		btnToLogin.setBounds(69, 375, 142, 39);
-		defaultPanel.add(btnToLogin);
-		btnToLogin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				LoginPage.createMemberLogin(frame, MainPage.this);
-			}
-		});
-		btnToLogin.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		ImageIcon img = new ImageIcon("img/background.jpg");
+		lblImage = new JLabel(img);
+		lblImage.setBounds(0, 0, 738, 537);
+		defaultPanel.add(lblImage);
 		
-		btnToSignup = new JButton("회원가입");
-		btnToSignup.setBounds(254, 375, 142, 39);
-		defaultPanel.add(btnToSignup);
-		btnToSignup.addActionListener(new ActionListener() {
+		btnSignup = new JButton("회원가입");
+		btnSignup.setForeground(SystemColor.activeCaptionBorder);
+		btnSignup.setBackground(SystemColor.info);
+		lblImage.add(btnSignup);
+		btnSignup.setBounds(584, 425, 142, 39);
+		btnSignup.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SignupPage.createMemberSignup(frame, MainPage.this);
 			}
 		});
-		btnToSignup.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		btnSignup.setFont(new Font("D2Coding", Font.PLAIN, 20));
+		
+		btnLogin = new JButton("로그인");
+		btnLogin.setForeground(SystemColor.activeCaptionBorder);
+		btnLogin.setBackground(SystemColor.info);
+		lblImage.add(btnLogin);
+		btnLogin.setBounds(584, 356, 142, 39);
+		btnLogin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LoginPage.createMemberLogin(frame, MainPage.this);
+			}
+		});
+		btnLogin.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		
 		
 		// 로그인 후 화면
@@ -194,7 +199,9 @@ public class MainPage {
 				model = new DefaultTableModel(null, COLUMN_NAMES);
 
 				for(Post p : postList) {
-					Object[] row = {p.getPostId(), p.getTitle(), p.getWriter(), p.getViews(), p.getCreatedTime()};
+					Object[] row = {p.getPostId(), p.getTitle(), p.getWriter(), p.getViews(), 
+							p.getCreatedTime().format(formatter)};
+					
 					model.addRow(row);
 				}
 				
@@ -232,8 +239,8 @@ public class MainPage {
 		menuBar.setVisible(false);
 		frame.setJMenuBar(menuBar);
 		
-		mnNewMenu = new JMenu("메뉴");
-		menuBar.add(mnNewMenu);
+		mnMember = new JMenu("회원");
+		menuBar.add(mnMember);
 		
 		mntmLogoutMenuItem = new JMenuItem("로그아웃");
 		mntmLogoutMenuItem.addActionListener(new ActionListener() {
@@ -259,8 +266,8 @@ public class MainPage {
 				MemberInfo.createMemberInfo(frame, MainPage.this, loginMember);
 			}
 		});
-		mnNewMenu.add(mntmMemberInfo);
-		mnNewMenu.add(mntmEditPassword);
+		mnMember.add(mntmMemberInfo);
+		mnMember.add(mntmEditPassword);
 		
 		mntmEditNickname = new JMenuItem("닉네임 변경");
 		mntmEditNickname.addActionListener(new ActionListener() {
@@ -268,8 +275,8 @@ public class MainPage {
 				NicknameUpdate.createNicknameUpdate(frame, MainPage.this, loginMember);
 			}
 		});
-		mnNewMenu.add(mntmEditNickname);
-		mnNewMenu.add(mntmLogoutMenuItem);
+		mnMember.add(mntmEditNickname);
+		mnMember.add(mntmLogoutMenuItem);
 		
 		mnChatMenu = new JMenu("채팅");
 		menuBar.add(mnChatMenu);
@@ -277,7 +284,6 @@ public class MainPage {
 		mntmNewMenuItem = new JMenuItem("채팅 들어가기");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Client_GUI.start();
 			}
 		});
 		mnChatMenu.add(mntmNewMenuItem);
@@ -330,3 +336,4 @@ public class MainPage {
 		resetTableModel();
 	}
 }
+

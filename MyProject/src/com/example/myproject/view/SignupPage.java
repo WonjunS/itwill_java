@@ -1,26 +1,24 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import com.example.project.controller.MemberDaoImpl;
-import com.example.project.model.Member;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import com.example.myproject.controller.MemberDaoImpl;
+import com.example.myproject.model.Member;
 
 public class SignupPage extends JFrame {
 
@@ -78,7 +76,7 @@ public class SignupPage extends JFrame {
 		}
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(x, y, 498, 527);
+		setBounds(x, y, 498, 513);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -86,7 +84,8 @@ public class SignupPage extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 484, 416);
+		panel.setBackground(SystemColor.inactiveCaption);
+		panel.setBounds(0, 0, 484, 474);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -117,37 +116,37 @@ public class SignupPage extends JFrame {
 		
 		textName = new JTextField();
 		textName.setFont(new Font("D2Coding", Font.PLAIN, 16));
-		textName.setBounds(178, 31, 278, 45);
+		textName.setBounds(167, 31, 289, 45);
 		panel.add(textName);
 		textName.setColumns(10);
 		
 		textEmail = new JTextField();
 		textEmail.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textEmail.setColumns(10);
-		textEmail.setBounds(178, 174, 278, 45);
+		textEmail.setBounds(167, 174, 289, 45);
 		panel.add(textEmail);
 		
 		textPassword = new JPasswordField();
 		textPassword.setFont(new Font("D2Coding", Font.PLAIN, 16));
-		textPassword.setBounds(178, 247, 278, 45);
+		textPassword.setBounds(167, 247, 289, 45);
 		panel.add(textPassword);
 		
 		passwordConfirm = new JPasswordField();
 		passwordConfirm.setFont(new Font("D2Coding", Font.PLAIN, 16));
-		passwordConfirm.setBounds(178, 324, 278, 45);
+		passwordConfirm.setBounds(167, 324, 289, 45);
 		panel.add(passwordConfirm);
 		
 		textNickname = new JTextField();
 		textNickname.setFont(new Font("D2Coding", Font.PLAIN, 16));
 		textNickname.setColumns(10);
-		textNickname.setBounds(178, 104, 278, 45);
+		textNickname.setBounds(167, 104, 289, 45);
 		panel.add(textNickname);
 		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(0, 416, 484, 72);
-		contentPane.add(buttonPanel);
-		
 		btnSignup = new JButton("회원가입");
+		btnSignup.setForeground(SystemColor.window);
+		btnSignup.setBackground(SystemColor.desktop);
+		btnSignup.setBounds(25, 404, 431, 45);
+		panel.add(btnSignup);
 		btnSignup.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -197,6 +196,5 @@ public class SignupPage extends JFrame {
 			}
 		});
 		btnSignup.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		buttonPanel.add(btnSignup);
 	}
 }

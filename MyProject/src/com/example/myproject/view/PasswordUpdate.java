@@ -1,21 +1,24 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.project.controller.MemberDaoImpl;
-import com.example.project.model.Member;
+import com.example.myproject.controller.MemberDaoImpl;
+import com.example.myproject.model.Member;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
 
 public class PasswordUpdate extends JFrame {
 
@@ -64,6 +67,7 @@ public class PasswordUpdate extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 516, 309);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -100,6 +104,8 @@ public class PasswordUpdate extends JFrame {
 		contentPane.add(passwordConfirmField);
 		
 		btnSave = new JButton("저장");
+		btnSave.setForeground(SystemColor.window);
+		btnSave.setBackground(SystemColor.desktop);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String currPassword = currentPasswordField.getText();
@@ -133,7 +139,7 @@ public class PasswordUpdate extends JFrame {
 			}
 		});
 		btnSave.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		btnSave.setBounds(188, 220, 119, 30);
+		btnSave.setBounds(186, 221, 130, 30);
 		contentPane.add(btnSave);
 	}
 }

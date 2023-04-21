@@ -1,21 +1,24 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.project.controller.MemberDaoImpl;
-import com.example.project.model.Member;
+import com.example.myproject.controller.MemberDaoImpl;
+import com.example.myproject.model.Member;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
 
 public class NicknameUpdate extends JFrame {
 
@@ -63,6 +66,7 @@ public class NicknameUpdate extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -80,6 +84,8 @@ public class NicknameUpdate extends JFrame {
 		nicknameField.setColumns(10);
 		
 		btnSave = new JButton("저장");
+		btnSave.setBackground(SystemColor.desktop);
+		btnSave.setForeground(SystemColor.window);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String input = nicknameField.getText();
@@ -100,6 +106,8 @@ public class NicknameUpdate extends JFrame {
 		contentPane.add(btnSave);
 		
 		btnNewButton = new JButton("중복확인");
+		btnNewButton.setForeground(SystemColor.window);
+		btnNewButton.setBackground(SystemColor.desktop);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String input = nicknameField.getText();

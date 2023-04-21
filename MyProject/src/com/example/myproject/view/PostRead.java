@@ -1,35 +1,33 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.project.controller.PostDaoImpl;
-import com.example.project.model.Member;
-import com.example.project.model.Post;
+import com.example.myproject.controller.PostDaoImpl;
+import com.example.myproject.model.Member;
+import com.example.myproject.model.Post;
 
 public class PostRead extends JFrame {
 
 	private final PostDaoImpl dao = PostDaoImpl.getInstance();
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	private Member member;
 	private Post post;
 	
 	private JPanel contentPane;
 	private JTextField textTitle;
-	private JLabel lblTitle;
-	private JScrollPane scrollPane;
-	private JTextField textContent;
 	
 	private Component parent;
 	private MainPage app;
@@ -37,6 +35,9 @@ public class PostRead extends JFrame {
 	private JButton btnClose;
 	private JButton btnDelete;
 	private JButton btnEdit;
+	private JTextField textContent;
+	private JTextField textWriter;
+	private JTextField textCreatedTime;
 
 	/**
 	 * Launch the application.
@@ -76,39 +77,43 @@ public class PostRead extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(x, y, 532, 574);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		lblTitle = new JLabel("Title");
-		lblTitle.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		lblTitle.setBounds(12, 10, 68, 33);
-		contentPane.add(lblTitle);
-		
 		textTitle = new JTextField();
 		textTitle.setText(post.getTitle());
 		textTitle.setEditable(false);
-		textTitle.setFont(new Font("Consolas", Font.PLAIN, 15));
-		textTitle.setBounds(101, 9, 407, 33);
+		textTitle.setFont(new Font("D2Coding", Font.PLAIN, 15));
+		textTitle.setBounds(12, 9, 496, 33);
 		contentPane.add(textTitle);
 		textTitle.setColumns(10);
 		
-		JLabel lblContent = new JLabel("Content");
-		lblContent.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		lblContent.setBounds(12, 226, 78, 33);
-		contentPane.add(lblContent);
+		textWriter = new JTextField();
+		textWriter.setText(post.getWriter());
+		textWriter.setFont(new Font("D2Coding", Font.PLAIN, 15));
+		textWriter.setEditable(false);
+		textWriter.setColumns(10);
+		textWriter.setBounds(12, 52, 248, 33);
+		contentPane.add(textWriter);
 		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(101, 62, 407, 368);
-		contentPane.add(scrollPane);
+		textCreatedTime = new JTextField();
+		textCreatedTime.setText(post.getCreatedTime().format(formatter));
+		textCreatedTime.setFont(new Font("D2Coding", Font.PLAIN, 15));
+		textCreatedTime.setEditable(false);
+		textCreatedTime.setColumns(10);
+		textCreatedTime.setBounds(260, 52, 248, 33);
+		contentPane.add(textCreatedTime);
 		
 		textContent = new JTextField();
 		textContent.setText(post.getContent());
+		textContent.setFont(new Font("D2Coding", Font.PLAIN, 15));
 		textContent.setEditable(false);
-		textContent.setFont(new Font("Consolas", Font.PLAIN, 15));
 		textContent.setColumns(10);
-		scrollPane.setViewportView(textContent);
+		textContent.setBounds(12, 109, 496, 366);
+		contentPane.add(textContent);
 		
 		if(post.getMemberId() == member.getMemberId()) {
 			textTitle.setEditable(true);
@@ -122,7 +127,7 @@ public class PostRead extends JFrame {
 				}
 			});
 			btnEdit.setFont(new Font("D2Coding", Font.PLAIN, 20));
-			btnEdit.setBounds(58, 462, 130, 40);
+			btnEdit.setBounds(58, 485, 130, 40);
 			contentPane.add(btnEdit);
 			
 			btnDelete = new JButton("글삭제");
@@ -133,7 +138,7 @@ public class PostRead extends JFrame {
 				}
 			});
 			btnDelete.setFont(new Font("D2Coding", Font.PLAIN, 20));
-			btnDelete.setBounds(216, 462, 130, 40);
+			btnDelete.setBounds(216, 485, 130, 40);
 			contentPane.add(btnDelete);
 		}
 		
@@ -145,7 +150,7 @@ public class PostRead extends JFrame {
 			}
 		});
 		btnClose.setFont(new Font("D2Coding", Font.PLAIN, 20));
-		btnClose.setBounds(378, 462, 130, 40);
+		btnClose.setBounds(378, 485, 130, 40);
 		contentPane.add(btnClose);
 		
 	}

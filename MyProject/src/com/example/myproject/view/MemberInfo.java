@@ -1,23 +1,27 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Font;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.example.project.controller.MemberDaoImpl;
-import com.example.project.model.Member;
+import com.example.myproject.controller.MemberDaoImpl;
+import com.example.myproject.model.Member;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.time.format.DateTimeFormatter;
+
+import javax.swing.JTextField;
+import java.awt.SystemColor;
 
 public class MemberInfo extends JFrame {
 
 	private JPanel contentPane;
 	
 	private final MemberDaoImpl dao = MemberDaoImpl.getInstance();
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	private Component parent;
 	private MainPage app;
 	private Member loginMember;
@@ -61,6 +65,7 @@ public class MemberInfo extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 493, 372);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -112,7 +117,7 @@ public class MemberInfo extends JFrame {
 		
 		textCreatedTime = new JTextField();
 		textCreatedTime.setEditable(false);
-		textCreatedTime.setText(loginMember.getCreatedTime().toString());
+		textCreatedTime.setText(loginMember.getCreatedTime().format(formatter));
 		textCreatedTime.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		textCreatedTime.setColumns(10);
 		textCreatedTime.setBounds(111, 247, 354, 33);

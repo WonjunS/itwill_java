@@ -1,4 +1,4 @@
-package com.example.project.view;
+package com.example.myproject.view;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -9,9 +9,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.example.project.controller.PostDaoImpl;
-import com.example.project.model.Member;
-import com.example.project.model.Post;
+import com.example.myproject.controller.PostDaoImpl;
+import com.example.myproject.model.Member;
+import com.example.myproject.model.Post;
 
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 
 import javax.swing.JButton;
+import java.awt.SystemColor;
 
 public class PostWrite extends JFrame {
 
@@ -77,12 +78,13 @@ public class PostWrite extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(x, y, 532, 574);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		lblTitle = new JLabel("Title");
+		lblTitle = new JLabel("제목");
 		lblTitle.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		lblTitle.setBounds(12, 10, 68, 33);
 		contentPane.add(lblTitle);
@@ -93,7 +95,7 @@ public class PostWrite extends JFrame {
 		contentPane.add(textTitle);
 		textTitle.setColumns(10);
 		
-		JLabel lblContent = new JLabel("Content");
+		JLabel lblContent = new JLabel("내용");
 		lblContent.setFont(new Font("D2Coding", Font.PLAIN, 20));
 		lblContent.setBounds(12, 226, 78, 33);
 		contentPane.add(lblContent);
@@ -108,6 +110,8 @@ public class PostWrite extends JFrame {
 		scrollPane.setViewportView(textContent);
 		
 		btnRegister = new JButton("글쓰기");
+		btnRegister.setForeground(SystemColor.window);
+		btnRegister.setBackground(SystemColor.desktop);
 		btnRegister.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -138,6 +142,8 @@ public class PostWrite extends JFrame {
 		contentPane.add(btnRegister);
 		
 		btnCancel = new JButton("취소");
+		btnCancel.setForeground(SystemColor.window);
+		btnCancel.setBackground(SystemColor.desktop);
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
